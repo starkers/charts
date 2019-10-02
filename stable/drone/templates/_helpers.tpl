@@ -47,3 +47,14 @@ Create the name of the service account to use for kubernetes pipelines
   {{ default "default" .Values.server.kubernetes.pipelineServiceAccount }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return the appropriate apiVersion for ingress.
+*/}}
+{{- define "drone.ingress.apiVersion" -}}
+{{- if semverCompare "<1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- print "extensions/v1beta1" -}}
+{{- else -}}
+{{- print "networking.k8s.io/v1beta1" -}}
+{{- end -}}
+{{- end -}}
